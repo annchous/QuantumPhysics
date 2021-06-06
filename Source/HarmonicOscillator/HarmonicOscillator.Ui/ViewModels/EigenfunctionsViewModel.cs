@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
 using System.Windows.Input;
 using HarmonicOscillator.Ui.Commands;
 using OxyPlot;
@@ -9,11 +7,11 @@ using OxyPlot.Series;
 
 namespace HarmonicOscillator.Ui.ViewModels
 {
-    public class PotentialEnergyViewModel : BaseViewModel
+    public class EigenfunctionsViewModel : BaseViewModel
     {
         private PlotModel _plotModel;
+        private Int32 _number;
         private Double _particleMass;
-        private Int32 _phononosNumber;
         private Double _oscillatorFrequency;
 
         public Double ParticleMass
@@ -36,12 +34,12 @@ namespace HarmonicOscillator.Ui.ViewModels
             }
         }
 
-        public Int32 PhononosNumber
+        public Int32 Number
         {
-            get => _phononosNumber;
+            get => _number;
             set
             {
-                _phononosNumber = value;
+                _number = value;
                 OnPropertyChanged();
             }
         }
@@ -70,27 +68,16 @@ namespace HarmonicOscillator.Ui.ViewModels
                     plotModel.Axes.Add(new LinearColorAxis
                     {
                         Palette = OxyPalettes.Jet(1024),
-                        Maximum = 1e-34
                     });
 
-                    var eigenvalue = new Eigenvalue(_oscillatorFrequency);
-                    LineSeries eigenvalueSeries = new LineSeries {Color = OxyColor.FromRgb(0, 102, 204)};
-                    for (Int32 n = 0; n < 5; n++)
+                    var eigenfunction = new Eigenfunction(_number, _particleMass, _oscillatorFrequency,
+                        new HermitePolynomial(_number));
+                    var eigenfunctionSeries = new LineSeries();
+                    for (Double x = -5; x < 5; x += 0.1)
                     {
-                        Double y = eigenvalue.GetValue(n);
-                        eigenvalueSeries.Points.Add(new DataPoint(-1, y));
-                        eigenvalueSeries.Points.Add(new DataPoint(1, y));
-                        plotModel.Series.Add(eigenvalueSeries);
-                        eigenvalueSeries = new LineSeries {Color = OxyColor.FromRgb(0, 102, 204)};
+                        eigenfunctionSeries.Points.Add(new DataPoint(x, eigenfunction.GetValue(x)));
                     }
-
-                    var potentialEnergy = new PotentialEnergy(_particleMass, _oscillatorFrequency);
-                    LineSeries potentialEnergySeries = new LineSeries {Color = OxyColor.FromRgb(255, 0, 102)};
-                    for (Double x = -0.1; x < 0.1; x += 0.001)
-                    {
-                        potentialEnergySeries.Points.Add(new DataPoint(x, potentialEnergy.GetValue(x)));
-                    }
-                    plotModel.Series.Add(potentialEnergySeries);
+                    plotModel.Series.Add(eigenfunctionSeries);
 
                     PlotModel = plotModel;
                 });

@@ -13,11 +13,11 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace HarmonicOscillator.Ui
+namespace HarmonicOscillator.Ui.Views
 {
-    public partial class MainWindow : Window
+    public partial class HomePage : Page
     {
-        public MainWindow()
+        public HomePage()
         {
             InitializeComponent();
         }
