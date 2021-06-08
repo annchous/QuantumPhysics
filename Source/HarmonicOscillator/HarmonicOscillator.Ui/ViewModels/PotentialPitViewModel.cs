@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Windows.Input;
 using HarmonicOscillator.Ui.Commands;
-using HarmonicOscillator.Ui.Models;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;

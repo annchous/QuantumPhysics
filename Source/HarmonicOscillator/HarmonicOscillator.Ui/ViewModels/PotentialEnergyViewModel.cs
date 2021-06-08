@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
 using System.Windows.Input;
 using HarmonicOscillator.Ui.Commands;
 using OxyPlot;
